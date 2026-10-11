@@ -1,0 +1,53 @@
+const express = require("express");
+
+const app = express();
+const PORT = 3002;
+
+app.use(express.json());
+
+// Middleware
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
+// Home route
+app.get("/", (req, res) => {
+    res.send("Welcome to ExpressJS");
+});
+
+// GET
+app.get("/students", (req, res) => {
+    res.json([
+        { id: 1, name: "Ravi", course: "CSE" },
+        { id: 2, name: "Anil", course: "ECE" }
+    ]);
+});
+
+// POST
+app.post("/students", (req, res) => {
+    res.status(201).json({
+        message: "Student added successfully",
+        student: req.body
+    });
+});
+
+// PUT
+app.put("/students/:id", (req, res) => {
+    res.json({
+        message: `Student ${req.params.id} updated successfully`,
+        student: req.body
+    });
+});
+
+// DELETE
+app.delete("/students/:id", (req, res) => {
+    res.json({
+        message: `Student ${req.params.id} deleted successfully`
+    });
+});
+
+// IMPORTANT: Start the server
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
